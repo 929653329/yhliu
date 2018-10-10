@@ -41,7 +41,6 @@ int main()
   addr.sin_port = htons(PORT);
   addr.sin_addr.s_addr = htonl(INADDR_ANY);
   
-  // 设置套接字选项避免地址使用错误  
   int on=1;  
   if((setsockopt(server_socket,SOL_SOCKET,SO_REUSEADDR,&on,sizeof(on)))<0)  
   {  
@@ -49,14 +48,12 @@ int main()
       return -1;
   }
   
-  //服务端与socket绑定
   int ret = bind(server_socket, (struct sockaddr *)&addr, sizeof(addr));
 	if(ret == -1)
 	{
 			perror("bind error!\n");
 			return -1;
 	}
-	//监听
 	ret = listen(server_socket, 5);        
 	if(ret == -1)
 	{
@@ -66,12 +63,10 @@ int main()
 	
 	while(1)
 	{
-			//创建一个新的addr
 			struct sockaddr_in client_addr;
 			int len_addr = sizeof(client_addr);
 			printf("*********wait client***********\n");
 			
-			//得到一个新的socket
 			int client_socket = accept(server_socket, (struct sockaddr *)&client_addr, (socklen_t*)&len_addr);
 			if(client_socket == -1)
 			{
